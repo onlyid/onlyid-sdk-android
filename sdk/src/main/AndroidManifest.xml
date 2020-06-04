@@ -1,0 +1,12 @@
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="onlyid.sdk">
+
+    <uses-permission android:name="android.permission.INTERNET" />
+
+    <application>
+        <activity
+            android:name=".OAuthActivity"
+            android:label="用唯ID登录"
+            android:theme="@style/MyTheme" />
+    </application>
+</manifest>
