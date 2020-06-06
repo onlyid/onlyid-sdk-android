@@ -1,9 +1,12 @@
 package onlyid.sdk;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.graphics.Bitmap;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.Menu;
@@ -29,6 +32,16 @@ public class OAuthActivity extends Activity {
                 public void run() {
                     OnlyID.listener.onComplete(code, state);
                     finish();
+                }
+            });
+        }
+
+        @JavascriptInterface
+        public void setTitle(final String title) {
+            runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    getActionBar().setTitle(title);
                 }
             });
         }

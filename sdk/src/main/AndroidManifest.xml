@@ -6,7 +6,7 @@
     <application>
         <activity
             android:name=".OAuthActivity"
-            android:label="用唯ID登录"
+            android:label="登录"
             android:theme="@style/MyTheme" />
     </application>
 </manifest>
