@@ -1,4 +1,4 @@
-package onlyid.sdk;
+package net.onlyid.sdk;
 
 import android.content.Context;
 import android.content.Intent;

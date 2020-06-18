@@ -1,4 +1,4 @@
-package onlyid.sdkTest;
+package net.onlyid.sdk_test;
 
 import android.app.Activity;
 import android.os.Bundle;
@@ -6,7 +6,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 
-import onlyid.sdk.OnlyID;
+import net.onlyid.sdk.OnlyID;
 
 public class MainActivity extends Activity {
     private static final String TAG = "OnlyID";
