@@ -1,8 +1,10 @@
 package net.onlyid.sdk;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.drawable.ColorDrawable;
+import android.net.Uri;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Log;
@@ -10,6 +12,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.webkit.JavascriptInterface;
+import android.webkit.ValueCallback;
 import android.webkit.WebChromeClient;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
@@ -20,6 +23,8 @@ public class OAuthActivity extends Activity {
     static final String MY_URL = "https://www.onlyid.net/oauth";
 
     ProgressBar progressBar;
+    WebView webView;
+    ValueCallback<Uri[]> filePathCallback;
 
     class JsInterface {
         @JavascriptInterface
@@ -57,7 +62,7 @@ public class OAuthActivity extends Activity {
     }
 
     void initWebView() {
-        WebView webView = findViewById(R.id.web_view);
+        webView = findViewById(R.id.web_view);
         OnlyID.OAuthConfig config = (OnlyID.OAuthConfig) getIntent().getSerializableExtra("config");
 
         if ("dark".equals(config.theme)) {
@@ -73,6 +78,16 @@ public class OAuthActivity extends Activity {
             @Override
             public void onProgressChanged(WebView view, int newProgress) {
                 progressBar.setProgress(newProgress);
+            }
+
+            @Override
+            public boolean onShowFileChooser(WebView webView, ValueCallback<Uri[]> filePathCallback, FileChooserParams fileChooserParams) {
+                OAuthActivity.this.filePathCallback = filePathCallback;
+
+                Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
+                intent.setType("image/*");
+                startActivityForResult(intent, 1);
+                return true;
             }
         });
         webView.setWebViewClient(new WebViewClient() {
@@ -120,5 +135,29 @@ public class OAuthActivity extends Activity {
         }
 
         return false;
+    }
+
+    @Override
+    public void onBackPressed() {
+        if (webView.canGoBack()) {
+            webView.goBack();
+        } else {
+            super.onBackPressed();
+        }
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        if (requestCode != 1) return;
+
+        if (resultCode != RESULT_OK) {
+            filePathCallback.onReceiveValue(null);
+            return;
+        }
+
+        Uri uri = data.getData();
+        filePathCallback.onReceiveValue(new Uri[]{uri});
     }
 }
