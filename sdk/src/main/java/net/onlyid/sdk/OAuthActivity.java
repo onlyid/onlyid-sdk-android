@@ -57,12 +57,12 @@ public class OAuthActivity extends Activity {
         getActionBar().setDisplayShowHomeEnabled(false);
 
         progressBar = findViewById(R.id.progress_bar);
+        webView = findViewById(R.id.web_view);
 
         initWebView();
     }
 
     void initWebView() {
-        webView = findViewById(R.id.web_view);
         OnlyID.OAuthConfig config = (OnlyID.OAuthConfig) getIntent().getSerializableExtra("config");
 
         if ("dark".equals(config.theme)) {
