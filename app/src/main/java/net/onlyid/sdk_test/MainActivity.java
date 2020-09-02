@@ -18,7 +18,7 @@ public class MainActivity extends Activity {
 
         Button test = findViewById(R.id.test);
         test.setOnClickListener((View v) -> {
-            OnlyID.OAuthConfig config = new OnlyID.OAuthConfig("fc5d31c48bdc4f8aa9766ecb0adc17d2");
+            OnlyID.OAuthConfig config = new OnlyID.OAuthConfig("0958a5d2a9614ae2813397c1f3bc6b19");
             OnlyID.oauth(this, config, new OnlyID.OAuthListener() {
                 @Override
                 public void onComplete(String code, String state) {
