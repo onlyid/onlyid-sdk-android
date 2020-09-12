@@ -1,57 +1,57 @@
 package net.onlyid.sdk;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 
-import java.io.Serializable;
+import org.json.JSONObject;
+
+import java.lang.reflect.Field;
 
 /**
  * SDK主入口
  */
 public class OnlyID {
-    static OAuthListener listener;
+    public static final int RESULT_ERROR = 1;
+    public static final String EXTRA_EXCEPTION = "extraException";
+    public static final String EXTRA_CODE = "extraCode";
+    public static final String EXTRA_STATE = "extraState";
+    static final String TAG = "OnlyID";
+    static final String PACKAGE = "net.onlyid";
 
     /**
      * 发起oauth请求，打开授权页
      */
-    public static void oauth(Context context, OAuthConfig config, OAuthListener listener) {
-        OnlyID.listener = listener;
+    public static void oauth(Activity activity, OAuthConfig config, int requestCode) {
+        if (appInstalled(activity)) {
+            JSONObject jsonObject = new JSONObject();
+            try {
+                for (Field field : OAuthConfig.class.getFields()) {
+                    jsonObject.put(field.getName(), field.get(config));
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
 
-        Intent intent = new Intent(context, OAuthActivity.class);
-        intent.putExtra("config", config);
-        context.startActivity(intent);
-    }
-
-    public static class OAuthConfig implements Serializable {
-        public String clientId; // 你的应用id
-        public String view; // 显示界面，设置为zoomed 放大显示，否则默认正常显示
-        public String theme; // 主题样式，设置为dark 夜间主题，否则默认日间主题
-        public String state; // oauth安全相关，不懂可以忽略
-
-        public OAuthConfig(String clientId) {
-            this(clientId, null, null, null);
-        }
-
-        public OAuthConfig(String clientId, String view, String theme, String state) {
-            this.clientId = clientId;
-            this.view = view;
-            this.theme = theme;
-            this.state = state;
+            Intent intent = new Intent("net.onlyid.OAUTH_ACTIVITY");
+            intent.setPackage(PACKAGE);
+            intent.putExtra("oauthConfig", jsonObject.toString());
+            activity.startActivityForResult(intent, requestCode);
+        } else {
+            Intent intent = new Intent(activity, OAuthActivity.class);
+            intent.putExtra("oauthConfig", config);
+            activity.startActivityForResult(intent, requestCode);
         }
     }
 
-    public interface OAuthListener {
-        void onComplete(String code, String state);
-        void onError(ErrCode errCode);
-        void onCancel();
-    }
-
-    public enum ErrCode {
-        NETWORK_ERR("网络错误，请检查");
-
-        public String msg;
-        ErrCode(String msg) {
-            this.msg = msg;
+    static boolean appInstalled(Context context) {
+        PackageManager pm = context.getPackageManager();
+        try {
+            pm.getPackageInfo(PACKAGE, PackageManager.GET_ACTIVITIES);
+            return true;
+        } catch (PackageManager.NameNotFoundException e) {
+            return false;
         }
     }
 }

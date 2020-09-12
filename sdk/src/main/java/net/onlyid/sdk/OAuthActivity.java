@@ -1,5 +1,6 @@
 package net.onlyid.sdk;
 
+import android.app.ActionBar;
 import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -19,23 +20,21 @@ import android.webkit.WebViewClient;
 import android.widget.ProgressBar;
 
 public class OAuthActivity extends Activity {
-    static final String TAG = "OnlyID";
     static final String MY_URL = "https://www.onlyid.net/oauth";
 
     ProgressBar progressBar;
     WebView webView;
     ValueCallback<Uri[]> filePathCallback;
+    ActionBar actionBar;
 
     class JsInterface {
         @JavascriptInterface
         public void onCode(final String code, final String state) {
-            runOnUiThread(new Runnable() {
-                @Override
-                public void run() {
-                    OnlyID.listener.onComplete(code, state);
-                    finish();
-                }
-            });
+            Intent data = new Intent();
+            data.putExtra(OnlyID.EXTRA_CODE, code);
+            data.putExtra(OnlyID.EXTRA_STATE, state);
+            setResult(RESULT_OK, data);
+            finish();
         }
 
         @JavascriptInterface
@@ -43,7 +42,7 @@ public class OAuthActivity extends Activity {
             runOnUiThread(new Runnable() {
                 @Override
                 public void run() {
-                    getActionBar().setTitle(title);
+                    actionBar.setTitle(title);
                 }
             });
         }
@@ -54,7 +53,8 @@ public class OAuthActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_oauth);
 
-        getActionBar().setDisplayShowHomeEnabled(false);
+        actionBar = getActionBar();
+        actionBar.setDisplayShowHomeEnabled(false);
 
         progressBar = findViewById(R.id.progress_bar);
         webView = findViewById(R.id.web_view);
@@ -63,11 +63,11 @@ public class OAuthActivity extends Activity {
     }
 
     void initWebView() {
-        OnlyID.OAuthConfig config = (OnlyID.OAuthConfig) getIntent().getSerializableExtra("config");
+        OAuthConfig config = (OAuthConfig) getIntent().getSerializableExtra("oauthConfig");
 
         if ("dark".equals(config.theme)) {
             int colorDark = getResources().getColor(R.color.theme_dark);
-            getActionBar().setBackgroundDrawable(new ColorDrawable(colorDark));
+            actionBar.setBackgroundDrawable(new ColorDrawable(colorDark));
             webView.setBackgroundColor(colorDark);
         }
 
@@ -93,8 +93,11 @@ public class OAuthActivity extends Activity {
         webView.setWebViewClient(new WebViewClient() {
             @Override
             public void onReceivedError(WebView view, int errorCode, String description, String failingUrl) {
-                Log.w(TAG, "onReceivedError: " + description);
-                OnlyID.listener.onError(OnlyID.ErrCode.NETWORK_ERR);
+                Log.w(OnlyID.TAG, "onReceivedError: " + description);
+                Intent data = new Intent();
+                Exception exception = new Exception("网络错误，请检查：" + description);
+                data.putExtra(OnlyID.EXTRA_EXCEPTION, exception);
+                setResult(OnlyID.RESULT_ERROR, data);
                 finish();
             }
 
@@ -116,7 +119,7 @@ public class OAuthActivity extends Activity {
         if (!TextUtils.isEmpty(config.view)) url += "&view=" + config.view;
         if (!TextUtils.isEmpty(config.state)) url += "&state=" + config.state;
 
-        Log.d(TAG, "url= " + url);
+        Log.d(OnlyID.TAG, "url= " + url);
         webView.loadUrl(url);
     }
 
@@ -129,7 +132,7 @@ public class OAuthActivity extends Activity {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         if (item.getItemId() == R.id.cancel) {
-            OnlyID.listener.onCancel();
+            setResult(RESULT_CANCELED);
             finish();
             return true;
         }
