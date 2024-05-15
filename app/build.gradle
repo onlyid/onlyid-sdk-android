@@ -28,6 +28,4 @@ android {
 dependencies {
     implementation fileTree(dir: "libs", include: ["*.jar"])
     implementation project(':sdk')
-
-    testImplementation 'junit:junit:4.12'
 }
