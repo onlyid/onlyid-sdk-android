@@ -1,12 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="net.onlyid.sdk">
-
-    <uses-permission android:name="android.permission.INTERNET" />
 
     <application>
         <activity
             android:name=".OAuthActivity"
             android:label="登录"
-            android:theme="@style/MyTheme" />
+            android:screenOrientation="portrait"
+            android:theme="@style/only_OAuthActivity" />
     </application>
 </manifest>

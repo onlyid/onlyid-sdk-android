@@ -1,6 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <!-- Base application theme. -->
-    <style name="MyTheme" parent="android:Theme.Material.Light">
-        <!-- Customize your theme here. -->
+
+    <style name="only_OAuthActivity" parent="android:Theme.Material.Light">
+        <item name="android:actionBarStyle">@style/only_ActionBar</item>
+        <item name="android:statusBarColor">#fff</item>
+        <item name="android:windowLightStatusBar">true</item>
+    </style>
+
+    <style name="only_ActionBar" parent="@android:style/Widget.Material.Light.ActionBar.Solid">
+        <item name="android:background">@android:color/white</item>
+        <item name="android:elevation">0dp</item>
     </style>
 </resources>
