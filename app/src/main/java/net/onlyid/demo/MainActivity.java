@@ -40,7 +40,7 @@ public class MainActivity extends Activity {
             String code = data.getStringExtra(OnlyID.EXTRA_CODE);
             resultTextView.setText("登录成功，code= " + code);
             // 得到code后，使用code换取用户信息的逻辑三端一致（Web、Android、iOS），详见官网文档
-        } else if (resultCode == RESULT_CANCELED) {
+        } else {
             resultTextView.setText("用户取消");
         }
     }

@@ -2,6 +2,10 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="net.onlyid.sdk">
 
+    <queries>
+        <package android:name="net.onlyid" />
+    </queries>
+
     <application>
         <activity
             android:name=".OAuthActivity"
