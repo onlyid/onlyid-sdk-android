@@ -4,13 +4,11 @@ android {
     compileSdkVersion 31
 
     defaultConfig {
-        applicationId "net.onlyid.sdk_test"
+        applicationId "net.onlyid.demo"
         minSdkVersion 24
-        targetSdkVersion 29
+        targetSdkVersion 31
         versionCode 1
         versionName "1.0"
-
-        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
 
     buildTypes {
@@ -26,6 +24,7 @@ android {
 }
 
 dependencies {
-    implementation fileTree(dir: "libs", include: ["*.jar"])
-    implementation project(':sdk')
+    implementation fileTree(dir: 'libs', include: ['*.jar'])
+//    implementation project(':sdk') // dev 内部开发使用，请忽略
+    implementation 'com.github.onlyid:onlyid-sdk-android:1.0.7' // prd 运行demo的开发者使用这个
 }
