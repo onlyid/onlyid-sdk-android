@@ -1,14 +1,11 @@
 package net.onlyid.sdk;
 
-import static net.onlyid.sdk.OnlyID.TAG;
-
 import android.app.ActionBar;
 import android.app.Activity;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.View;
 import android.webkit.JavascriptInterface;
 import android.webkit.ValueCallback;
@@ -22,6 +19,7 @@ import android.widget.Toast;
 
 public class OAuthActivity extends Activity {
     static final String MY_URL = "https://onlyid.net/oauth";
+//    static final String MY_URL = " http://192.168.31.117:3001/oauth";
 
     ActionBar actionBar;
     ProgressBar progressBar;

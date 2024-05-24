@@ -3,12 +3,17 @@
 
     <style name="only_OAuthActivity" parent="android:Theme.Material.Light">
         <item name="android:actionBarStyle">@style/only_ActionBar</item>
+        <item name="android:actionBarTheme">@style/only_ActionBarTheme</item>
         <item name="android:statusBarColor">#fff</item>
         <item name="android:windowLightStatusBar">true</item>
     </style>
 
-    <style name="only_ActionBar" parent="@android:style/Widget.Material.Light.ActionBar.Solid">
+    <style name="only_ActionBar" parent="android:Widget.Material.Light.ActionBar.Solid">
         <item name="android:background">@android:color/white</item>
         <item name="android:elevation">0dp</item>
+    </style>
+
+    <style name="only_ActionBarTheme" parent="android:ThemeOverlay.Material.ActionBar">
+        <item name="android:textColorPrimary">#333</item>
     </style>
 </resources>
