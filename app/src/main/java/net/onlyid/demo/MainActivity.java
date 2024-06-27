@@ -24,8 +24,8 @@ public class MainActivity extends Activity {
         resultTextView = findViewById(R.id.result_text_view);
 
         loginButton.setOnClickListener((View v) -> {
-            String clientId = "73c6cce568d34a25ac426a26a1ca0c1e"; // prd 运行demo的开发者使用这个
-//            String clientId = "3c9dfdd977434ab2aff330d4d20c3955"; // dev 内部开发使用，请忽略
+            String clientId = "ac426a26a1ca0c1e"; // prd 运行demo的开发者使用这个
+//            String clientId = "aff330d4d20c3955"; // dev 内部开发使用，请忽略
             OnlyID.startOAuth(this, REQUEST_OAUTH, clientId);
         });
     }
